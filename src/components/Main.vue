@@ -1,15 +1,38 @@
 <template>
   <v-app id="inspire">
 
-    <nav-drawer :showDrawer="showDrawer" @onHomeClicked="onHomeClicked"/>
+    <!-- navigation drawer -->
+    <v-navigation-drawer v-model="showDrawer" app>
+      <v-list dense>
+        <v-list-item link to="/home">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/contact">
+          <v-list-item-action>
+            <v-icon>mdi-email</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Contact</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
+    <!-- header -->
     <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ appName }}</v-toolbar-title>
     </v-app-bar>
 
-    <home/>
+    <!-- body -->
+    <router-view></router-view>
 
+    <!-- footer -->
     <v-footer color="indigo" app>
       <span class="white--text">&copy; {{ footer }}</span>
     </v-footer>
@@ -17,16 +40,11 @@
 </template>
 
 <script>
-import NavDrawer from './NavDrawer.vue';
-import Home from './Home.vue';
 
 export default {
   components: {
-    NavDrawer,
-    Home
   },
   props: {
-    source: String
   },
   data: () => ({
     appName: 'Investable Assets Calculator',
@@ -34,9 +52,6 @@ export default {
     showDrawer: false
   }),
   methods: {
-    onHomeClicked() {
-      
-    }
   }
 };
 </script>
