@@ -1,4 +1,4 @@
-# temp
+# Investable Assets Calculator
 
 ## Project setup
 ```
