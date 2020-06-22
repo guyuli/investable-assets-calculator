@@ -6,7 +6,16 @@
       lazy-validation
       >
 
+      <user-selection
+        question="1. Do you have any bank deposits?"
+        label="Choose Yes or No..."
+        :items="yesOrNoItems"
+        @selectionChanged="haveBankDepositsSelectionChanged"
+        >
+      </user-selection>
+
       <v-expansion-panels
+        v-if="haveBankDeposits"
         v-model="totalBankDepositsExpanded"
         focusable
         popout
@@ -69,9 +78,15 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
-
-
-
+      <v-divider class="mt-5"></v-divider>
+      
+      <user-selection
+        question="2. Are you paying a down payment?"
+        label="Choose Yes or No..."
+        :items="yesOrNoItems"
+        @selectionChanged="PayDownPaymentSelectionChanged"
+        >
+      </user-selection>
 
 
 
@@ -149,72 +164,94 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      valid: true,
-      numOfBankAccounts: 1,
-      bankAccounts: [
+import UserSelection from "./Utilities/UserSelection"
+
+export default {
+  components: {
+    UserSelection,
+  },
+  data: () => ({
+    valid: true,
+    numOfBankAccounts: 1,
+    bankAccounts: [
+      {
+        id: 1,
+        bankName: null,
+        amount: null
+      }
+    ],
+    totalBankDepositsExpanded: 0, // default to expand
+
+    yesOrNoItems: ["Yes", "No"],
+    haveBankDeposits: false,
+    payDownPayment: false,
+
+    // name: '',
+    // nameRules: [
+    //   v => !!v || 'Name is required',
+    //   v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+    // ],
+    // email: '',
+    // emailRules: [
+    //   v => !!v || 'E-mail is required',
+    //   v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+    // ],
+    // select: null,
+    // items: [
+    //   'Item 1',
+    //   'Item 2',
+    //   'Item 3',
+    //   'Item 4',
+    // ],
+    // checkbox: false,
+  }),
+  computed: {
+    totalBankDeposits() {
+      let totalBankDeposits = 0;
+      this.bankAccounts.forEach(bankAccount => {
+        totalBankDeposits = totalBankDeposits + 
+        parseFloat(bankAccount.amount == null || bankAccount.amount == "" ? 0 : bankAccount.amount);
+      });
+      return totalBankDeposits;
+    }
+  },
+  methods: {
+    addNewBankAccount() {
+      this.numOfBankAccounts++;
+      this.bankAccounts.push(
         {
-          id: 1,
+          id: this.numOfBankAccounts,
           bankName: null,
           amount: null
         }
-      ],
-      totalBankDepositsExpanded: 0, // default to expand
-
-
-
-      // name: '',
-      // nameRules: [
-      //   v => !!v || 'Name is required',
-      //   v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-      // ],
-      // email: '',
-      // emailRules: [
-      //   v => !!v || 'E-mail is required',
-      //   v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      // ],
-      // select: null,
-      // items: [
-      //   'Item 1',
-      //   'Item 2',
-      //   'Item 3',
-      //   'Item 4',
-      // ],
-      // checkbox: false,
-    }),
-    computed: {
-      totalBankDeposits() {
-        let totalBankDeposits = 0;
-        this.bankAccounts.forEach(bankAccount => {
-          totalBankDeposits = totalBankDeposits + parseFloat(bankAccount.amount == null? 0 : bankAccount.amount);
-        });
-        return totalBankDeposits;
+      );
+    },
+    removeBankAccount(bankAccountId) {
+      this.bankAccounts = this.bankAccounts.filter(bankAccount => bankAccount.id != bankAccountId);
+    },
+    haveBankDepositsSelectionChanged(value) {
+      if (value === "Yes") {
+        this.haveBankDeposits = true;
+      } else {
+        this.haveBankDeposits = false;
       }
     },
-    methods: {
-      addNewBankAccount() {
-        this.numOfBankAccounts++;
-        this.bankAccounts.push(
-          {
-            id: this.numOfBankAccounts,
-            bankName: null,
-            amount: null
-          }
-        );
-      },
-      removeBankAccount(bankAccountId) {
-        this.bankAccounts = this.bankAccounts.filter(bankAccount => bankAccount.id != bankAccountId);
+    payDownPaymentSelectionChanged(value) {
+      if (value === "Yes") {
+        this.payDownPayment = true;
+      } else {
+        this.payDownPayment = false;
       }
-      // validate () {
-      //   this.$refs.form.validate()
-      // },
-      // reset () {
-      //   this.$refs.form.reset()
-      // },
-      // resetValidation () {
-      //   this.$refs.form.resetValidation()
-      // },
-    },
-  }
+    }
+    // validate () {
+    //   this.$refs.form.validate()
+    // },
+    // reset () {
+    //   this.$refs.form.reset()
+    // },
+    // resetValidation () {
+    //   this.$refs.form.resetValidation()
+    // },
+  },
+}
 </script>

@@ -47,7 +47,7 @@ export default {
   props: {
   },
   data: () => ({
-    appName: 'Investable Assets Calculator',
+    appName: 'Disposable Assets Calculator',
     footer: '2020 Developed by Guyu Li',
     showDrawer: false
   }),

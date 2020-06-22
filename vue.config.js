@@ -2,5 +2,5 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  publicPath: '/investable-assets-calculator/' // for github deployment
+  publicPath: '/disposable-assets-calculator/' // for github deployment
 }

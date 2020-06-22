@@ -1,4 +1,4 @@
-# Investable Assets Calculator
+# Disposable Assets Calculator
 
 ## Project setup
 ```
